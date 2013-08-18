@@ -1,0 +1,58 @@
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<style>
+			#my_canvas{
+				display:block;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<p>凸多边形碰撞检测与分离</p>
+		<div style="font-size:24px">
+			<input type="button" id="btn" value="click me"/>
+			click to check intersetion and separate them
+			
+		</div>
+		<canvas id ="my_canvas" width = "500" height="500"
+				style="border:1px solid red">
+		</canvas> 
+		
+		<script type="text/javascript" src = "../src/vec2.js"></script>
+		<script type="text/javascript" src = "../src/collision.js"></script>
+		
+		<script>
+			var $V = function(x,y){
+				return new zl.Vec2(x,y); 
+			};
+			var p1 = new Polygon($V(100,100),$V(250,250),$V(300,100));
+			var p2 = new Polygon($V(100,150),$V(300,300),$V(300,200));
+			//var p2 = new Polygon($V()
+			var ctx = document.getElementById("my_canvas").getContext("2d");
+			p1.draw(ctx,"blue");
+			p2.draw(ctx);
+			
+			var btn = document.getElementById("btn");
+				btn.addEventListener('click',function(){
+				if(p1.intersetWith(p2)){
+					console.log('interset');
+					for(var i = 0;i<p1.points.length;i++){
+						p1.points[i].add_m(p1.MTD);
+					}
+					for(var i = 0;i<p2.points.length;i++){
+						p2.points[i].sub_m(p2.MTD);
+					}
+				}
+				//ctx.clearRect(0,0,500,500);
+				ctx.strokeStyle="red";
+				ctx.lineWidth = 3;
+				p1.draw(ctx);
+				p2.draw(ctx);
+			},false)
+			
+			
+		</script>
+		
+	</body>
+</html>
