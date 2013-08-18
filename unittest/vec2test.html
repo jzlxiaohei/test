@@ -1,0 +1,59 @@
+<html>
+	<head>
+		<meta charset="utf-8"/>
+	</head>
+	
+	<body>
+		
+		
+		<script type="text/javascript" src = "assert.js"></script>
+		<script type="text/javascript" src = "vec2.js"></script>
+		
+		<script>
+			//var Vec = zl.Vec2;
+			function $V(x,y){	
+				return new zl.Vec2(x,y);
+			}
+			
+			zl.assert($V(2,1).add($V(1,2).equals($V(3,3))),"(1,2)+(2,1)=(3,3)");
+			zl.assert($V(2,1).sub($V(1,2).equals($V(1,-1))),"(2,1)-(1,2)=(1,-1)");
+			zl.assert($V(2,1).sub($V(1,2)!=($V(1,-1))),"inmutable tests.equals,but refs not equal");
+			zl.assert($V(4,3).scale(2).equals($V(8,6)),"scale");
+			zl.assert($V(1,1).set_m($V(2,3)).equals($V(2,3)),"scale");
+			
+			(function(v)
+			{
+				var x=  v.x;
+				var y = v.y;
+				
+				zl.assert(v==v.add_m($V(3,4)),"mutable tests.ref equal");
+				zl.assert(v.x==x+3&&v.y ==y+4,"changed by ref");
+				
+				zl.assert(v==v.sub_m($V(3,4)),"mutable tests.ref equal");
+				zl.assert(v.x==x&&v.y ==y,"changed by ref");
+				
+				zl.assert(v==v.scale_m(2),"mutable tests.ref equal");
+				zl.assert(v.x==2*x&&v.y ==2*y,"changed by ref");
+				
+				
+				zl.assert(v==v.set_m($V(3,4)),"mutable tests.ref equal");
+				zl.assert(v.x==3&&v.y ==4,"changed by ref");
+				
+			})($V(3,8));
+			
+			zl.assertAlmostEqual($V(2,4).normal().length(),1,"normal().length() close to 1");
+			zl.assert($V(2,4).normal().almostEquals($V(3,6).normal()),"(2,4).normal() close to (3,6).normal()");
+			zl.assert($V(0,8).normal().equals($V(0,1)),"normal");
+			zl.assert($V(2,3).dot($V(4,1))===11,"dot test")
+			zl.assertAlmostEqual($V(0,-1).angle($V(1,0)),Math.PI/2,"正交向量，夹角PI/2");
+			zl.assertAlmostEqual($V(1,0).angle($V(0,-1)),-Math.PI/2,"正交向量，夹角-PI/2");
+			zl.assert($V(2,0).rotate(Math.PI/2).almostEquals($V(0,2)),"rotate");
+			zl.assert($V(1,1).rotate_m(Math.PI/4).almostEquals($V(0,Math.sqrt(2))),"rotate");
+			zl.assert($V(1,1).toString() ==="(1,1)","toString()");
+			
+			zl.assert(zl.Vec2.add == undefined,"function prototype");
+			zl.assert(typeof zl.Vec2.prototype.add=="function","funciton prototype");
+		</script>
+		
+	</body>
+</html>
