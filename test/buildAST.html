@@ -1,0 +1,78 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+		<style>
+			svg{
+				border:1px solid red;
+				display:block;
+				margin-top:20px;
+			}
+		
+		</style>
+	</head>
+	<body>
+		<input id='expr' type="text" placeholder="输入表达式" value="1*3+2+2*(3+4*5)*6-7"/>
+		<input type="button" id="btn" value="parse"></input>
+		请输入合法的四则运算表达式(检测错误的功能很弱；如果树的层次比较深，下图的格式会乱掉)
+		<script type="text/javascript" src="../src/compiler/lex.js"></script>
+		<script type="text/javascript" src="../src/compiler/parser.js"></script>
+		<script type="text/javascript" src="../lib/d3.v3.min.js"></script>
+		<script>
+			document.getElementById('btn').addEventListener('click',function(){
+				g.remove();
+				g = svg.append('g');
+				var expr = document.getElementById('expr');
+				var expStr = expr.value;
+				try{
+					var scanner = zl.Scanner(expStr);
+					var tree = zl.Parser(scanner).parse();
+				}catch(ex){
+					alert("请输入合法的四则运算表达式(括号必须是英文下的括号).");
+					console.log(ex.msg);
+					console.log(ex.stack);
+					return;
+				}
+				parseTree(tree,480,20,0);
+				//console.log(tree);
+			},false);
+			
+			var svg = d3.select('body').append('svg')
+						.attr('width',1000)
+						.attr('height',600)
+			var g = svg.append('g');
+			
+			//left op right
+			var parseTree = function(tree,x,y,depth,parent){
+				
+				if(parent)
+				{
+					g.append('line')
+						.attr('x1',parent.attr('x'))
+						.attr('y1',parent.attr('y'))
+						.attr('x2',x)
+						.attr('y2',y)
+						.attr('stroke','blue')
+						.attr('stroke-width',1);
+						
+				}
+				if('op' in tree)
+				{
+					
+					var t = g.append('text')
+						.text(tree.op.desc)
+						.attr('x',x)
+						.attr('y',y);
+					var i = depth>3?3:depth;
+					parseTree(tree.left,x-(150-30*i),y+60,i+1,t);
+					parseTree(tree.right,x+(150-30*i),y+60,i+1,t);
+				}else{
+					g.append('text')
+					.text(tree.value)
+					.attr('x',x)
+					.attr('y',y);
+				}
+			}
+		</script>
+	</body>
+</html>
+

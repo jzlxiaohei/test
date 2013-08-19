@@ -128,6 +128,3 @@ Polygon.prototype.draw = function(ctx,color){
 	ctx.stroke();
 }
 
-
-//--------static method--------//
-
