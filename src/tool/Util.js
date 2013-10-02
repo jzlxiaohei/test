@@ -29,26 +29,34 @@
 	}
 	
 	
-	util.merge = function(s,t){
-		for(var i in t){
-			s[i] = t[i];		
-		}
-		return s;
-	}
+//	util.merge = function(s,t){
+//		for(var i in t){
+//			s[i] = t[i];		
+//		}
+//		return s;
+//	}
 	
 	//Recursive edition
-	util.mergeR = function(s,t){
-		for(var i in t){
-			var ext = t[i];
-			if( ext instanceof Object){
-				(s[i] instanceof Object) || (s[i]={});
-				mergeR(s[i],ext);
-			}
-			else{
-				s[i] =t[i];
-			}
-		}	
-		return s;
-	}
+	util.merge = function(s, t)
+	{
+	    for (var key in t)
+	    {
+	        var ext = t[key];
+	        if (typeof (ext) != 'object')
+	        {
+	            s[key] = ext;
+	        }
+	        else
+	        {
+	            if (!s[key] || typeof (s[key]) != 'object')
+	            {
+	                s[key] = {};
+	            }
+	            merge(s[key], ext);
+	        }
+	    }
+	    return s;
+	};
+
 	
 }(exports)

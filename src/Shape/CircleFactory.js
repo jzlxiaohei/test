@@ -9,7 +9,8 @@
 	
 	var Circle = exports.Circle;
 	var util = exports.util;
-	function Circles(){
+	function Circles(name){
+		this.name = name;
 		this.arr=[];
 	}
 	Circles.prototype = {

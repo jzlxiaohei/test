@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Grid Test</title>
+		<script>
+			window.exports = {};
+		</script>
+		<script src="tool/Util.js"></script>
+		<script src="Shape/Circle.js"></script>
+		<script src="Shape/Line.js"></script>
+		<script src="Board/CanvasBorad.js"></script>
+		<script src="Shape/FactoryUtil.js"></script>
+		<script src ="Shape/LineFactory.js"></script>
+		<script src ="Shape/CircleFactory.js"></script>
+		<script src="Render/Render.js"></script> 
+	</head>
+	<body>
+		<canvas id="myCanvas" width="800" height="600" style="border: 1px solid red"></canvas>
+		<script>
+			var render = new exports.Render();
+			render.register("lines",exports.Lines);
+			render.register("circles",exports.Circles)
+			var ctx = document.getElementById("myCanvas").getContext("2d");
+			var board = new exports.CanvasBoard({"ctx":ctx});
+
+			render.lines("hGrid")
+				.data({x1:50,x2:750},function(d,i){
+						d.y1 = d.y2 = (i+1)*100;
+						return d;
+					},5)
+				.style({strokeStyle:"blue"})
+				.draw(board);
+			
+			render.lines("vGrid")
+				.data({y1:50,y2:550},function(d,i){
+						d.x1 = d.x2 = (i+1)*100;
+						return d;
+					},7)
+				.style({strokeStyle:"blue"})
+				.draw(board);
+				
+			var data = [];
+			for(var i = 0;i<100;i++){
+				data.push({x:Math.random()*700+50,y:Math.random()*500+50,r:10});
+			}
+			render.circles("random point")
+				.data(data)
+				.style({fillStyle:"red"})
+				.draw(board);
+		</script>
+	</body>
+</html>

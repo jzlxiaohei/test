@@ -10,7 +10,8 @@
 	var util = exports.util;
 	var Line = exports.Line;
 	
-	function Lines(){
+	function Lines(id){
+		this.name = name;
 		this.arr = [];
 	}
 	
